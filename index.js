@@ -10,7 +10,6 @@ const responseJSON = jsonObject => {
 
 const doPost = e => {
   const data = JSON.parse(e.postData.contents);
-
   const { parameters, intent } = data.queryResult;
   if (intent.displayName === 'Ask for answer') {
     const enubudataQuestion = parameters.enubudata;
@@ -18,25 +17,11 @@ const doPost = e => {
     const enubudata = Enubudata.where({ question: enubudataQuestion }).first();
 
     const response = {
-      fulfillmentText: ` ${enubudata.answer} `,
-      fulfillmentMessages: [
-        {
-          platform: 'line',
-          type: 4,
-          payload: {
-            line: {
-              type: 'text',
-              text: ` ${enubudata.answer} `
-            }
-          }
-        }
-      ]
-    };
-
+      fulfillmentText: ` ${enubudata.answer} `};
+    
     return responseJSON(response);
   }
 
   return responseJSON({ fulfillmentText: 'ไม่เข้าใจครับ ลองใหม่อีกทีนะครับ' });
 };
-
 global.doPost = doPost;
